@@ -1,0 +1,7 @@
+# servers.list
+# Registrierte Server-Instanzen für ArcadeOps
+# Format: <Server-Name>:<Spiel-Typ>:<Installations-Pfad>
+# Beispiel:
+# my7dtd:7dtd:/opt/arcadeops/servers/my7dtd
+
+# Jede Zeile eine Instanz

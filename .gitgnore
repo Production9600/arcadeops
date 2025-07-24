@@ -1,0 +1,41 @@
+# Git Ignore Datei für ArcadeOps
+
+# Binärdateien und temporäre Dateien
+
+\*.o
+\*.tmp
+\*\~
+
+# Logdateien und Backups
+
+data/backups/
+data/logs/
+var/log/arcadeops/
+
+# Konfigurationsdateien (lokal angepasst)
+
+config/arcadeops.conf
+config/servers/\*.conf
+
+# Shell Compilation (Premium-Version)
+
+assets/shc/
+
+# Editor-Dateien
+
+.vscode/
+.idea/
+\*.swp
+
+# GitHub CI/CD
+
+.github/
+
+# Node modules (falls Web-Panel in Zukunft)
+
+node\_modules/
+
+# Betriebssystem-Dateien
+
+.DS\_Store
+Thumbs.db
