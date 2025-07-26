@@ -36,10 +36,19 @@ done
 # ---------------------------------------------------------
 function install_menu() {
     ui_menu "Server-Erstellung" "Wähle einen Installer:" \
-        "7dtd:7 Days To Die" \
-        "rust:Rust" \
-        "valheim:Valheim" \
-        "csgo:CS:GO"
+		"7dtd:7 Days To Die" \
+		"rust:Rust" \
+		"valheim:Valheim" \
+		"csgo:CS:GO" \
+		"ark:ARK: Survival Evolved" \
+		"project_zomboid:Project Zomboid" \
+		"satisfactory:Satisfactory" \
+		"squad:Squad" \
+		"tf2:Team Fortress 2" \
+		"l4d2:Left 4 Dead 2" \
+		"gmod:Garry’s Mod" \
+		"unturned:Unturned" \
+		"arma3:Arma 3"
 
     case "$MENU_RET" in
         7dtd)
@@ -62,6 +71,51 @@ function install_menu() {
             [[ -z "$INPUT_RET" ]] && return
             install_csgo "$INPUT_RET"
             ;;
+		ark)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_ark "$INPUT_RET"
+			;;
+		project_zomboid
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_project_zomboid "$INPUT_RET"
+			;;
+		satisfactory)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_satisfactory "$INPUT_RET"
+			;;
+		squad)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_squad "$INPUT_RET"
+			;;
+		tf2)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_tf2 "$INPUT_RET"
+			;;
+		l4d2)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_l4d2 "$INPUT_RET"
+			;;
+		gmod)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_gmod "$INPUT_RET"
+			;;
+		unturned)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_unturned "$INPUT_RET"
+			;;
+		arma3)
+			ui_input "Instanzname" "Bitte eindeutigen Server-Namen eingeben:" ""
+            [[ -z "$INPUT_RET" ]] && return
+			install_arma3 "$INPUT_RET"
+			;;
         *) ;;
     esac
 }

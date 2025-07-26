@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 #############
 # bots.sh
 # Copyright (c) Gerhard Pfeiffer 2025
-# Versionsnummer: 1.0.0
-# Disclaimer: Use at your own risk. Siehe LICENSE für Details.
+# Versionsnummer: 1.0.1
+# Disclaimer: Use at your own risk.
 #############
 
 BOTS_DIR="${CONFIG_DIR}/bots"
@@ -22,22 +23,19 @@ function load_bot_entry() {
 
 function create_bot() {
     ui_input "Bot-Name" "Name für den Bot:" ""
-    local botname="$INPUT_RET"
-    [[ -z "$botname" ]] && return
+    local botname="$INPUT_RET"; [[ -z "$botname" ]] && return
 
     ui_menu "Bot-Typ" "Wähle Typ:" \
         "broadcast:Chat-Broadcast" \
         "rcon:RCON-Bot"
-    local bottype="$MENU_RET"
-    [[ -z "$bottype" ]] && return
+    local bottype="$MENU_RET"; [[ -z "$bottype" ]] && return
 
-    # Server auswählen
     local servers=( $(awk -F ':' '{print $1}' "${DATA_DIR}/servers.list") )
+    [[ ${#servers[@]} -gt 0 ]] || { print_warning "Keine Server konfiguriert."; return; }
     local items=()
     for s in "${servers[@]}"; do items+=("$s:$s"); done
     ui_menu "Server wählen" "Instanz?" "${items[@]}"
-    local server="$MENU_RET"
-    [[ -z "$server" ]] && return
+    local server="$MENU_RET"; [[ -z "$server" ]] && return
 
     mkdir -p "${BOTS_DIR}"
     case "$bottype" in
@@ -63,8 +61,7 @@ function delete_bot() {
     local items=()
     for b in "${bots[@]}"; do items+=("$b:$b"); done
     ui_menu "Bot löschen" "Wähle Bot:" "${items[@]}"
-    local bot="$MENU_RET"
-    [[ -z "$bot" ]] && return
+    local bot="$MENU_RET"; [[ -z "$bot" ]] && return
     grep -v -E "^${bot}:" "${DATA_BOTS}" > "${DATA_BOTS}.tmp" && mv "${DATA_BOTS}.tmp" "${DATA_BOTS}"
     print_success "Bot '$bot' gelöscht."
 }
@@ -73,14 +70,14 @@ function start_bot() {
     local bots=( $(get_bots) )
     [[ ${#bots[@]} -gt 0 ]] || { print_warning "Keine Bots vorhanden."; return; }
     local items=()
-    for b in "${bots[@]}"; do items+=("$b:$b"); end
+    for b in "${bots[@]}"; do items+=("$b:$b"); done
     ui_menu "Bot starten" "Wähle Bot:" "${items[@]}"
-    local bot="$MENU_RET"
-    [[ -z "$bot" ]] && return
+    local bot="$MENU_RET"; [[ -z "$bot" ]] && return
 
     local entry; entry=$(load_bot_entry "$bot")
     IFS=':' read -r name type server params <<< "$entry"
     print_header "Starte Bot: $bot"
+
     if [[ "$type" == "broadcast" ]]; then
         local message interval
         message=$(echo "$entry" | sed -n 's/.*message=\([^:]*\).*/\1/p')
@@ -91,6 +88,7 @@ function start_bot() {
         rcon_cmd=$(echo "$entry" | sed -n 's/.*rcon_cmd=\([^:]*\).*/\1/p')
         nohup bash -c "while true; do mcrcon -H 127.0.0.1 -P 28016 -p changeme '${rcon_cmd}'; sleep 60; done" >/dev/null 2>&1 &
     fi
+
     print_success "Bot '$bot' gestartet."
 }
 
@@ -100,8 +98,7 @@ function stop_bot() {
     local items=()
     for b in "${bots[@]}"; do items+=("$b:$b"); done
     ui_menu "Bot stoppen" "Wähle Bot:" "${items[@]}"
-    local bot="$MENU_RET"
-    [[ -z "$bot" ]] && return
+    local bot="$MENU_RET"; [[ -z "$bot" ]] && return
     pkill -f "$bot" || print_warning "Kein laufender Prozess gefunden."
     print_success "Bot '$bot' gestoppt."
 }

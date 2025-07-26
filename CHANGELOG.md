@@ -1,48 +1,85 @@
 # Changelog
 
-Alle signifikanten Änderungen an ArcadeOps werden hier dokumentiert.
-
-## \[1.0.0] - 2025-07-21
+## [1.3.0] – 2025‑07‑26
 
 ### Hinzugefügt
-
-* Initiale Veröffentlichung mit den folgenden Modulen:
-
-  * `bin/arcadeops.sh` (Hauptskript mit Hauptmenü)
-  * `lib/utils.sh` (Hilfsfunktionen für Farbausgabe, Logging, Package-Management)
-  * `modules/bootstrap.sh` (Abhängigkeitsprüfung und Installation)
-  * `modules/update.sh` (Selbst-Update via GitHub)
-  * `modules/install/7dtd.sh` (Installer für 7 Days To Die)
-  * `modules/install/rust.sh` (Installer für Rust)
-  * `modules/install/valheim.sh` (Installer für Valheim)
-  * `modules/install/csgo.sh` (Installer für CS\:GO)
-  * `modules/management.sh` (Start/Stop/Restart/Status/Backup/Restore)
-  * `modules/discord.sh` (Discord Webhook Integration)
-  * `modules/bots.sh` (Bot-Management: Broadcast, RCON)
-  * Konfigurationsdateien unter `config/`,`config/servers/`,`data/servers.list`
-  * Dokumentation: `README.md`, `LICENSE`, `CHANGELOG.md`
+- Text‑Fallback‑Menü für alle ohne `whiptail`‑Abhängigkeit (Nummerneingabe)
+- Option zum Entpacken und Validieren aus lokalem Archiv (`install_from_archives.sh`)
+- Unterstützung zusätzlicher Spiele: ARK, Project Zomboid, Satisfactory, Squad, TF2, L4D2, GMod, Unturned, Arma 3, Space Engineers, Tower Unite, Quake Live, Quake II, Starbound
 
 ### Geändert
-
-* Projektstruktur etabliert und erste Konfigurationsvorlagen erstellt.
-
-### Festgestellt
-
-* Baseline-Funktionalität sowohl für Light- als auch Premium-Version definiert.
-
-## \[1.1.0] - 2025-07-23
-### Hinzugefügt
-- Neues, einheitliches Menüsystem (whiptail/dialog-Fallback, `ui_menu`, `ui_input`, `ui_confirm`, `ui_box`)
-- Funktion `delete_server()` im Server-Management
-- Lokale SteamCMD-Installation in `modules/steamcmd` inkl. Wrapper & Initialisierung
-- Fehlerbehebungen: CRLF-Konvertierung, `force_install_dir`-Reihenfolge in SteamCMD-Befehlen
-- Dokumentationspaket für die Light-Version: Einzelne Markdown-Dateien je Funktion (für Homepage)
-
-### Geändert
-- Alle Installer verwenden nun strikt die lokale SteamCMD (`modules/steamcmd/steamcmd.sh`)
-- Zentrales Installations-Menü in `bin/arcadeops.sh`; Modul-Menüs entfernt
-- `servers.list` wird im Management gefiltert (keine Kommentar-/Leerzeilen im Menü)
+- `arcadeops.sh` bereinigt (keine Verweise auf nicht vorhandenes Modul)
+- Menü‑Logik vereinheitlicht, Fallback für reines Terminal‑Interface
+- Alle Installer‑Module auf Unix‑EOL umgestellt
 
 ### Behoben
-- `confirm`/`pause` fehlten in utils: wieder integriert
-- „Please use force_install_dir before logon!“ SteamCMD-Fehler behoben
+- Syntaxfehler in `bots.sh` korrigiert (fehlendes `done`)
+- Hauptmenü wird nach Bootstrap jetzt zuverlässig angezeigt
+
+---
+
+## [1.2.1] – 2025‑07‑25
+
+### Hinzugefügt
+- Automatische Installation von `whiptail` im Bootstrapper, falls nicht vorhanden
+- Sicherstellung, dass `ui_menu` mit `whiptail`/`dialog` funktioniert
+
+### Geändert
+- `bootstrap.sh` prüft und installiert nun `whiptail`
+
+### Behoben
+- Menüanzeige mit `ui_menu` nach Bootstrap wieder aktiv
+
+---
+
+## [1.2.0] – 2025‑07‑24
+
+### Hinzugefügt
+- Bootstrapper installiert automatisch alle erforderlichen 32‑Bit‑Libraries (`libc6:i386`, `libstdc++6:i386`, `libgcc-s1:i386`)
+- Überarbeitete Fehlerbehandlung und Wrapper‑Erstellung in `bootstrap.sh`
+
+### Geändert
+- SteamCMD wird stets manuell per `wget` heruntergeladen und in `modules/steamcmd` entpackt
+- Wrapper unter `/usr/bin/steamcmd` angelegt
+
+### Behoben
+- Fehler beim SteamCMD‑Test (fehlende 32‑Bit‑Abhängigkeiten) beseitigt
+
+---
+
+## [1.1.0] – 2025‑07‑23
+
+### Hinzugefügt
+- Einheitliches Menüsystem mit `whiptail`/`dialog` inklusive Fallback
+- `delete_server()` im Management-Modul
+- Lokale SteamCMD‑Installation plus globaler Wrapper `/usr/bin/steamcmd`
+- Leichtgewichtige Dokumentationspakete (HTML, ZIP, Wiki‑Vorlagen)
+
+### Geändert
+- Installer nutzen ausschließlich lokale SteamCMD
+- Zentrales Installations‑Menü in `arcadeops.sh`
+
+### Behoben
+- CRLF‑Probleme bei Shellskripten
+- Reihenfolge von `+force_install_dir` korrigiert
+- Fehlende `confirm()` und `pause()` ergänzt
+
+---
+
+## [1.0.0] – 2025‑07‑22
+
+### Hinzugefügt
+- Erste öffentliche Version (Light) von ArcadeOps
+- Basis‑Bootstrapper: Abhängigkeiten prüfen, i386‑Arch aktivieren, SteamCMD‑Installation
+- Text‑Menü‑Engine (Funktion `ui_menu`/`ui_box`/`ui_input`)
+- Installer‑Module für 7DTD, Rust, Valheim, CS:GO
+- Server‑Management: Start/Stop/Restart/Status, Backups erstellen, wiederherstellen, löschen, Server löschen
+- Discord‑Webhook‑Integration
+- Bot‑Steuerung (Broadcast‑ und RCON‑Bots)
+- Update‑Funktion via GitHub (Download & Versionsvergleich)
+
+### Geändert
+- — (Initiale Version)
+
+### Behoben
+- — (Initiale Version)
